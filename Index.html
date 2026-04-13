@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦕 Dino-Drukarnia 🦕</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FFB3C6;
+    --yellow: #FFF3B0;
+    --green: #B5EAD7;
+    --blue: #C7CEEA;
+    --orange: #FFDAC1;
+    --purple: #E2C2FF;
+    --dark: #4A3728;
+    --mid: #7B6355;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', 'Comic Sans MS', cursive;
+    background: var(--yellow);
+    background-image:
+      radial-gradient(circle at 10% 20%, #FFB3C620 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, #B5EAD730 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, #C7CEEA15 0%, transparent 60%);
+    min-height: 100vh;
+    color: var(--dark);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #FF8FAB 0%, #FF6B9D 50%, #C850C0 100%);
+    padding: 20px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 20px #FF6B9D55;
+  }
+  header::before {
+    content: '🦕🦖🦕🦖🦕🦖🦕🦖🦕🦖🦕🦖🦕🦖🦕🦖';
+    position: absolute; top: 0; left: 0; right: 0;
+    font-size: 22px; opacity: 0.25; letter-spacing: 8px;
+    white-space: nowrap; overflow: hidden;
+  }
+  header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: white;
+    text-shadow: 4px 4px 0 #C850C0, 6px 6px 0 #88009040;
+    letter-spacing: -1px;
+    position: relative;
+  }
+  header p {
+    color: #FFE8F5;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 700;
+    margin-top: 6px;
+    position: relative;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: white;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    position: sticky; top: 0; z-index: 100;
+  }
+  nav a {
+    text-decoration: none;
+    background: var(--green);
+    color: var(--dark);
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  nav a:hover { transform: scale(1.08); border-color: var(--dark); }
+
+  /* ── SECTIONS ── */
+  section { padding: 40px 20px; max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--dark);
+  }
+  .section-title span { display: inline-block; }
+
+  /* ── DINO CARDS ── */
+  .dino-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .dino-card {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    border: 4px solid transparent;
+    transition: all 0.25s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .dino-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 20px;
+  }
+  .dino-card:nth-child(1) { border-color: #FF8FAB; }
+  .dino-card:nth-child(1)::before { background: #FF8FAB15; }
+  .dino-card:nth-child(2) { border-color: #7BC8A4; }
+  .dino-card:nth-child(2)::before { background: #7BC8A415; }
+  .dino-card:nth-child(3) { border-color: #6FA8DC; }
+  .dino-card:nth-child(3)::before { background: #6FA8DC15; }
+
+  .dino-card:hover { transform: translateY(-6px) scale(1.02); }
+  .dino-card:hover::before { opacity: 1; }
+  .dino-card.selected { transform: scale(1.04); }
+  .dino-card.selected::after {
+    content: '✅ WYBRANY!';
+    position: absolute; top: 12px; right: 12px;
+    background: #4CAF50; color: white;
+    font-size: 0.75rem; font-weight: 900;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  .dino-svg { width: 160px; height: 160px; margin: 0 auto 16px; display: block; }
+
+  .dino-name {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.7rem;
+    color: var(--dark);
+    margin-bottom: 10px;
+  }
+  .dino-fact {
+    background: var(--yellow);
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--mid);
+    line-height: 1.5;
+    border: 2px dashed #F4C430;
+  }
+  .dino-fact::before { content: '💡 '; }
+
+  /* ── PRINT BUTTON ── */
+  .print-section {
+    text-align: center;
+    margin-top: 36px;
+  }
+  .btn-big {
+    display: inline-block;
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.7rem);
+    font-weight: 800;
+    padding: 18px 44px;
+    border-radius: 60px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.12);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+  }
+  .btn-big:hover { transform: translateY(-3px); box-shadow: 0 9px 0 rgba(0,0,0,0.15), 0 12px 24px rgba(0,0,0,0.15); }
+  .btn-big:active { transform: translateY(2px); box-shadow: 0 3px 0 rgba(0,0,0,0.15); }
+  .btn-green { background: linear-gradient(135deg, #56C596, #3DAA7F); color: white; }
+  .btn-orange { background: linear-gradient(135deg, #FF9A3C, #FF6B00); color: white; }
+  .btn-pink { background: linear-gradient(135deg, #FF8FAB, #FF5C8A); color: white; }
+  .btn-purple { background: linear-gradient(135deg, #B07CF8, #8A2BE2); color: white; }
+
+  /* ── PRINT PREVIEW ── */
+  #print-preview {
+    display: none;
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 500px;
+    margin: 30px auto 0;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    border: 4px dashed #AAAAAA;
+    text-align: center;
+  }
+  #print-preview h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+    color: var(--dark);
+  }
+  #print-preview .print-dino { width: 220px; height: 220px; margin: 0 auto 20px; }
+  #print-preview p { font-size: 1rem; color: #888; margin-top: 12px; }
+  #print-dino-name { font-size: 1.9rem; font-weight: 900; color: #333; margin-bottom: 10px; }
+  #coloring-lines { font-size: 0.9rem; color: #aaa; }
+
+  /* ── MATH SECTION ── */
+  #math {
+    background: linear-gradient(135deg, #E8F4FD, #D4EDFF);
+    border-radius: 32px;
+    padding: 40px 30px;
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+  .dino-counter {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    animation: bounce-in 0.5s ease;
+  }
+  @keyframes bounce-in {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .dino-icon {
+    display: inline-block;
+    cursor: default;
+    transition: transform 0.2s;
+    animation: wiggle 2s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.3s);
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+  }
+  .math-question {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    text-align: center;
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+  .math-input-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .math-input {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.5rem;
+    font-weight: 900;
+    width: 110px;
+    height: 90px;
+    text-align: center;
+    border: 5px solid #6FA8DC;
+    border-radius: 20px;
+    background: white;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .math-input:focus { border-color: #FF6B9D; transform: scale(1.05); }
+  .math-result {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-top: 20px;
+    min-height: 60px;
+    font-weight: 800;
+  }
+  .result-ok { color: #2E7D32; animation: pop 0.4s ease; }
+  .result-no { color: #C62828; animation: shake 0.4s ease; }
+  @keyframes pop { 0%{transform:scale(0.5)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+
+  .math-controls {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+
+  /* ── PREMIUM ── */
+  #premium {
+    background: linear-gradient(135deg, #2C2C54, #3D3D8F);
+    color: white;
+    border-radius: 32px;
+    padding: 50px 30px;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow: 0 10px 40px rgba(44,44,84,0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  #premium::before {
+    content: '⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫';
+    position: absolute; top: 0; left: 0; right: 0;
+    font-size: 20px; opacity: 0.15;
+    letter-spacing: 10px; white-space: nowrap;
+  }
+  #premium h2 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin-bottom: 10px;
+    color: #FFD700;
+    text-shadow: 0 0 20px #FFD70066;
+  }
+  #premium .subtitle {
+    font-size: 1.1rem;
+    color: #C8C8E8;
+    margin-bottom: 26px;
+    font-weight: 700;
+  }
+  .premium-perks {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  .perk {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 16px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #E8E8FF;
+  }
+  .perk span { display: block; font-size: 1.8rem; margin-bottom: 6px; }
+  .price-tag {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #FFD700;
+    font-weight: 900;
+    margin-bottom: 6px;
+    text-shadow: 0 0 30px #FFD70066;
+  }
+  .price-sub {
+    color: #9090C0;
+    font-size: 0.85rem;
+    text-decoration: line-through;
+    margin-bottom: 22px;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, #FFD700, #FF9500);
+    color: #2C2C54;
+    font-size: 1.4rem;
+    padding: 18px 50px;
+    border-radius: 60px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 900;
+    box-shadow: 0 6px 0 #CC7A00, 0 8px 24px #FFD70055;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 9px 0 #CC7A00, 0 14px 30px #FFD70066; }
+  .btn-gold:active { transform: translateY(2px); }
+  .secure-note { font-size: 0.8rem; color: #7070A0; margin-top: 16px; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: #9B8B7B;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  /* ── DECORATIVE DIVIDER ── */
+  .divider {
+    text-align: center;
+    font-size: 1.8rem;
+    margin: 10px 0 40px;
+    letter-spacing: 8px;
+    opacity: 0.5;
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    * { -webkit-print-color-adjust: exact; }
+    header, nav, .no-print, footer, #math-section, #premium-section { display: none !important; }
+    body { background: white !important; }
+    #print-preview {
+      display: block !important;
+      border: none !important;
+      box-shadow: none !important;
+      max-width: 100% !important;
+      padding: 20px !important;
+    }
+    #print-dino-name { color: black !important; font-size: 2.5rem !important; }
+    .print-dino svg path, .print-dino svg ellipse, .print-dino svg circle, .print-dino svg rect {
+      fill: white !important;
+      stroke: black !important;
+      stroke-width: 3px !important;
+    }
+    #coloring-lines {
+      display: block !important;
+      font-size: 1rem !important;
+      color: #444 !important;
+      margin-top: 20px !important;
+    }
+    .print-hint { display: block !important; font-size: 0.9rem; color: #555; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <h1>🦕 Dino-Drukarnia 🦕</h1>
+  <p>Koloruj, ucz się i baw razem z dinozaurami! 🎨</p>
+</header>
+
+<!-- NAV -->
+<nav class="no-print">
+  <a href="#generator">🖨️ Kolorowanki</a>
+  <a href="#math-section">🔢 Policz Dinki</a>
+  <a href="#premium-section">⭐ Premium</a>
+</nav>
+
+<!-- GENERATOR -->
+<section id="generator">
+  <h2 class="section-title">🎨 Wybierz dinozaura do wydruku!</h2>
+  <div class="dino-grid" id="dino-grid">
+
+    <!-- T-REX -->
+    <div class="dino-card" onclick="selectDino(this, 'trex')" id="card-trex">
+      <svg class="dino-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body -->
+        <ellipse cx="100" cy="120" rx="55" ry="40" fill="#FF8FAB" stroke="#C0305A" stroke-width="3"/>
+        <!-- Head -->
+        <ellipse cx="155" cy="85" rx="38" ry="28" fill="#FF8FAB" stroke="#C0305A" stroke-width="3"/>
+        <!-- Jaw -->
+        <path d="M130 95 Q155 115 178 95" fill="#FF8FAB" stroke="#C0305A" stroke-width="3"/>
+        <!-- Eye -->
+        <circle cx="163" cy="78" r="7" fill="white" stroke="#C0305A" stroke-width="2"/>
+        <circle cx="165" cy="78" r="3.5" fill="#333"/>
+        <circle cx="166" cy="76" r="1.2" fill="white"/>
+        <!-- Teeth -->
+        <path d="M135 97 L138 107 L142 97" fill="white" stroke="#C0305A" stroke-width="1.5"/>
+        <path d="M148 100 L151 110 L155 100" fill="white" stroke="#C0305A" stroke-width="1.5"/>
+        <path d="M161 100 L164 110 L168 100" fill="white" stroke="#C0305A" stroke-width="1.5"/>
+        <!-- Tail -->
+        <path d="M45 115 Q20 110 10 130 Q5 145 25 140 Q35 138 45 125" fill="#FF8FAB" stroke="#C0305A" stroke-width="3"/>
+        <!-- Back leg -->
+        <path d="M75 155 L68 185 L80 185 L85 160" fill="#FF8FAB" stroke="#C0305A" stroke-width="3"/>
+        <!-- Front leg small -->
+        <path d="M135 125 L130 145 L140 145" fill="#FF8FAB" stroke="#C0305A" stroke-width="3"/>
+        <!-- Spikes on back -->
+        <path d="M80 80 L85 65 L90 80" fill="#FF5C8A" stroke="#C0305A" stroke-width="1.5"/>
+        <path d="M95 78 L100 62 L105 78" fill="#FF5C8A" stroke="#C0305A" stroke-width="1.5"/>
+        <path d="M110 80 L115 65 L120 80" fill="#FF5C8A" stroke="#C0305A" stroke-width="1.5"/>
+      </svg>
+      <div class="dino-name">T-Rex 🦖</div>
+      <div class="dino-fact">T-Rex miał zęby wielkości bananów! Ale chodził powoli jak słoń 🐘</div>
+    </div>
+
+    <!-- TRICERATOPS -->
+    <div class="dino-card" onclick="selectDino(this, 'triceratops')" id="card-triceratops">
+      <svg class="dino-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body -->
+        <ellipse cx="95" cy="125" rx="60" ry="42" fill="#B5EAD7" stroke="#3DAA7F" stroke-width="3"/>
+        <!-- Head -->
+        <ellipse cx="148" cy="90" rx="35" ry="30" fill="#B5EAD7" stroke="#3DAA7F" stroke-width="3"/>
+        <!-- Frill/Shield -->
+        <ellipse cx="125" cy="72" rx="30" ry="22" fill="#7BC8A4" stroke="#3DAA7F" stroke-width="3"/>
+        <!-- Horns -->
+        <path d="M160 62 L168 42 L155 55" fill="#3DAA7F" stroke="#2A7A5A" stroke-width="2"/>
+        <path d="M148 58 L152 36 L144 52" fill="#3DAA7F" stroke="#2A7A5A" stroke-width="2"/>
+        <path d="M137 70 L128 55 L136 65" fill="#3DAA7F" stroke="#2A7A5A" stroke-width="2"/>
+        <!-- Eye -->
+        <circle cx="157" cy="84" r="7" fill="white" stroke="#3DAA7F" stroke-width="2"/>
+        <circle cx="158" cy="84" r="3.5" fill="#333"/>
+        <circle cx="159" cy="82" r="1.2" fill="white"/>
+        <!-- Mouth -->
+        <path d="M165 95 Q172 90 175 96" stroke="#3DAA7F" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- Legs -->
+        <rect x="58" y="158" width="18" height="28" rx="8" fill="#B5EAD7" stroke="#3DAA7F" stroke-width="3"/>
+        <rect x="82" y="160" width="18" height="26" rx="8" fill="#B5EAD7" stroke="#3DAA7F" stroke-width="3"/>
+        <rect x="110" y="158" width="18" height="28" rx="8" fill="#B5EAD7" stroke="#3DAA7F" stroke-width="3"/>
+        <rect x="133" y="160" width="18" height="26" rx="8" fill="#B5EAD7" stroke="#3DAA7F" stroke-width="3"/>
+        <!-- Tail -->
+        <path d="M35 120 Q15 110 10 125 Q8 140 30 135 Q38 133 40 120" fill="#B5EAD7" stroke="#3DAA7F" stroke-width="3"/>
+      </svg>
+      <div class="dino-name">Triceratops 🌿</div>
+      <div class="dino-fact">Ten dinozaur jadł tylko rośliny! Miał 3 rogi do obrony przed wrogami 🌱</div>
+    </div>
+
+    <!-- STEGOSAURUS -->
+    <div class="dino-card" onclick="selectDino(this, 'stegosaurus')" id="card-stegosaurus">
+      <svg class="dino-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body -->
+        <ellipse cx="100" cy="130" rx="62" ry="38" fill="#C7CEEA" stroke="#5C6BC0" stroke-width="3"/>
+        <!-- Head -->
+        <ellipse cx="158" cy="105" rx="25" ry="18" fill="#C7CEEA" stroke="#5C6BC0" stroke-width="3"/>
+        <!-- Neck -->
+        <path d="M133 115 Q140 100 148 98" stroke="#C7CEEA" stroke-width="18" fill="none" stroke-linecap="round"/>
+        <path d="M133 115 Q140 100 148 98" stroke="#5C6BC0" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- Eye -->
+        <circle cx="164" cy="100" r="5.5" fill="white" stroke="#5C6BC0" stroke-width="2"/>
+        <circle cx="165" cy="100" r="2.8" fill="#333"/>
+        <circle cx="166" cy="99" r="1" fill="white"/>
+        <!-- Mouth -->
+        <path d="M168 108 Q175 105 178 110" stroke="#5C6BC0" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Back plates -->
+        <path d="M70 94 L62 65 L78 94" fill="#9FA8DA" stroke="#5C6BC0" stroke-width="2"/>
+        <path d="M85 88 L77 52 L93 88" fill="#9FA8DA" stroke="#5C6BC0" stroke-width="2"/>
+        <path d="M100 86 L93 48 L107 86" fill="#9FA8DA" stroke="#5C6BC0" stroke-width="2"/>
+        <path d="M115 88 L108 52 L122 88" fill="#9FA8DA" stroke="#5C6BC0" stroke-width="2"/>
+        <path d="M128 93 L122 65 L136 93" fill="#9FA8DA" stroke="#5C6BC0" stroke-width="2"/>
+        <!-- Tail spikes -->
+        <path d="M35 130 Q18 118 12 132 Q8 146 28 138 L38 128" fill="#C7CEEA" stroke="#5C6BC0" stroke-width="3"/>
+        <path d="M28 138 L18 150" stroke="#5C6BC0" stroke-width="3" stroke-linecap="round"/>
+        <path d="M18 132 L8 122" stroke="#5C6BC0" stroke-width="3" stroke-linecap="round"/>
+        <!-- Legs -->
+        <rect x="62" y="160" width="16" height="28" rx="7" fill="#C7CEEA" stroke="#5C6BC0" stroke-width="3"/>
+        <rect x="84" y="162" width="16" height="25" rx="7" fill="#C7CEEA" stroke="#5C6BC0" stroke-width="3"/>
+        <rect x="112" y="160" width="16" height="28" rx="7" fill="#C7CEEA" stroke="#5C6BC0" stroke-width="3"/>
+        <rect x="132" y="162" width="16" height="25" rx="7" fill="#C7CEEA" stroke="#5C6BC0" stroke-width="3"/>
+      </svg>
+      <div class="dino-name">Stegozaur 💜</div>
+      <div class="dino-fact">Stegozaur miał mózg wielkości orzecha włoskiego! Ale za to piękne płyty na plecach 🌟</div>
+    </div>
+  </div>
+
+  <!-- Print Section -->
+  <div class="print-section no-print" id="print-section" style="display:none">
+    <div id="print-preview">
+      <h3>🖨️ Gotowe do druku!</h3>
+      <div id="print-dino-name"></div>
+      <div class="print-dino" id="print-dino-svg"></div>
+      <p id="coloring-lines">✏️ Pokoloruj mnie swoimi kredkami!</p>
+      <p class="print-hint" style="display:none">Wydrukuj i pokoloruj!</p>
+    </div>
+    <br>
+    <button class="btn-big btn-orange" onclick="window.print()">
+      🖨️ Drukuj kolorowankę!
+    </button>
+    <br><br>
+    <button class="btn-big btn-pink no-print" onclick="resetSelection()" style="font-size:1rem; padding:12px 28px;">
+      🔄 Wybierz innego
+    </button>
+  </div>
+
+  <div id="choose-hint" style="text-align:center; margin-top:30px; font-size:1.3rem; font-weight:800; color:#9B8B7B;">
+    👆 Kliknij na dinozaura, żeby go wybrać!
+  </div>
+</section>
+
+<div class="divider no-print">🦕🦖🦕🦖🦕</div>
+
+<!-- MATH -->
+<section id="math-section" class="no-print">
+  <h2 class="section-title">🔢 Policz Dinozaury!</h2>
+  <div id="math">
+    <div class="dino-counter" id="dino-counter"></div>
+    <div class="math-question" id="math-question">Ile dinozaurów widzisz? 👀</div>
+    <div class="math-input-row">
+      <input type="number" class="math-input" id="math-answer" placeholder="?" min="1" max="20" onkeydown="if(event.key==='Enter') checkAnswer()">
+      <button class="btn-big btn-green no-print" onclick="checkAnswer()">✅ Sprawdź!</button>
+    </div>
+    <div class="math-result" id="math-result"></div>
+    <div class="math-controls">
+      <button class="btn-big btn-pink" onclick="newRound()" style="font-size:1rem; padding:14px 30px;">🔀 Nowe zadanie</button>
+    </div>
+  </div>
+</section>
+
+<div class="divider no-print">⭐🌟✨💫⭐🌟</div>
+
+<!-- PREMIUM -->
+<section id="premium-section" class="no-print">
+  <h2 class="section-title">👪 Dla Rodziców</h2>
+  <div id="premium">
+    <h2>🌟 Pakiet Premium</h2>
+    <p class="subtitle">Daj dziecku nieskończoną zabawę z dinozaurami!</p>
+    <div class="premium-perks">
+      <div class="perk"><span>🦕</span>100 kolorowanek</div>
+      <div class="perk"><span>📚</span>20 kart edukacyjnych</div>
+      <div class="perk"><span>🎮</span>Gry matematyczne</div>
+      <div class="perk"><span>🖨️</span>Formaty A4 / A5</div>
+    </div>
+    <div class="price-sub">Normalna cena: 29 zł</div>
+    <div class="price-tag">💎 Tylko 9 zł!</div>
+    <br>
+    <button class="btn-gold" onclick="alert('Dziękujemy za zainteresowanie! Funkcja płatności wkrótce dostępna 🦕')">
+      ⬇️ Pobierz Pakiet Premium
+    </button>
+    <p class="secure-note">🔒 Bezpieczna płatność · Natychmiastowe pobranie · Jednorazowa opłata</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="no-print">
+  <p>🦕 Dino-Drukarnia © 2025 · Stworzone z ❤️ dla małych dinomaniaków 🦖</p>
+</footer>
+
+<script>
+  // ── DINO DATA ──
+  const dinoData = {
+    trex: {
+      name: 'T-Rex 🦖',
+      svgId: 'card-trex',
+      get svg() { return document.querySelector('#card-trex svg').cloneNode(true); }
+    },
+    triceratops: {
+      name: 'Triceratops 🌿',
+      svgId: 'card-triceratops',
+      get svg() { return document.querySelector('#card-triceratops svg').cloneNode(true); }
+    },
+    stegosaurus: {
+      name: 'Stegozaur 💜',
+      svgId: 'card-stegosaurus',
+      get svg() { return document.querySelector('#card-stegosaurus svg').cloneNode(true); }
+    }
+  };
+
+  let selectedDino = null;
+
+  function selectDino(card, key) {
+    // Deselect all
+    document.querySelectorAll('.dino-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedDino = key;
+
+    // Update print preview
+    const dino = dinoData[key];
+    document.getElementById('print-dino-name').textContent = dino.name;
+    const svgContainer = document.getElementById('print-dino-svg');
+    svgContainer.innerHTML = '';
+    const svgClone = dino.svg;
+    svgClone.setAttribute('width', '220');
+    svgClone.setAttribute('height', '220');
+    svgContainer.appendChild(svgClone);
+
+    document.getElementById('print-preview').style.display = 'block';
+    document.getElementById('print-section').style.display = 'block';
+    document.getElementById('choose-hint').style.display = 'none';
+
+    // Smooth scroll
+    setTimeout(() => {
+      document.getElementById('print-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  function resetSelection() {
+    document.querySelectorAll('.dino-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('print-section').style.display = 'none';
+    document.getElementById('choose-hint').style.display = 'block';
+    selectedDino = null;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── MATH GAME ──
+  const dinoEmojis = ['🦕','🦖','🦕','🦖','🦕'];
+  let currentAnswer = 0;
+  let tries = 0;
+
+  function newRound() {
+    const n = Math.floor(Math.random() * 8) + 2; // 2–9
+    currentAnswer = n;
+    tries = 0;
+
+    const container = document.getElementById('dino-counter');
+    container.innerHTML = '';
+    container.style.animation = 'none';
+    void container.offsetWidth; // reflow
+    container.style.animation = 'bounce-in 0.5s ease';
+
+    for (let i = 0; i < n; i++) {
+      const span = document.createElement('span');
+      span.className = 'dino-icon';
+      span.style.setProperty('--i', i);
+      span.textContent = dinoEmojis[i % dinoEmojis.length];
+      container.appendChild(span);
+    }
+
+    document.getElementById('math-answer').value = '';
+    document.getElementById('math-result').textContent = '';
+    document.getElementById('math-answer').focus();
+
+    const questions = [
+      'Ile dinozaurów widzisz? 👀',
+      'Policz wszystkie dinki! 🦕',
+      'Ile ich jest razem? 🔢',
+      'Czy potrafisz je policzyć? 🤔',
+    ];
+    document.getElementById('math-question').textContent = questions[Math.floor(Math.random()*questions.length)];
+  }
+
+  function checkAnswer() {
+    const val = parseInt(document.getElementById('math-answer').value);
+    const resultEl = document.getElementById('math-result');
+    tries++;
+
+    if (isNaN(val)) {
+      resultEl.className = 'math-result result-no';
+      resultEl.textContent = '✏️ Wpisz swoją odpowiedź!';
+      return;
+    }
+
+    if (val === currentAnswer) {
+      const msgs = [
+        `🎉 Brawo! Zgadza się — ${currentAnswer}!`,
+        `⭐ Super! Policz jeszcze raz — ${currentAnswer}! Jesteś mądrą/mądrym!`,
+        `🏆 Doskonale! To jest ${currentAnswer}! Hurra!`,
+        `🦕 WOW! Masz rację — ${currentAnswer}!`,
+      ];
+      resultEl.className = 'math-result result-ok';
+      resultEl.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+      confetti();
+    } else {
+      const msgs = [
+        `😊 Prawie! Spróbuj jeszcze raz!`,
+        `🤔 Nie zgadza się... Policz jeszcze raz!`,
+        `💪 Nie poddawaj się! Licz powolutku!`,
+      ];
+      resultEl.className = 'math-result result-no';
+      resultEl.textContent = tries >= 3
+        ? `💡 Odpowiedź to: ${currentAnswer}! Następnym razem się uda! 😊`
+        : msgs[Math.floor(Math.random()*msgs.length)];
+    }
+  }
+
+  // Mini confetti
+  function confetti() {
+    const colors = ['#FF8FAB','#B5EAD7','#C7CEEA','#FFF3B0','#FFDAC1','#E2C2FF'];
+    for (let i = 0; i < 30; i++) {
+      const dot = document.createElement('div');
+      dot.style.cssText = `
+        position:fixed;
+        width:12px;height:12px;
+        border-radius:50%;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        left:${Math.random()*100}vw;
+        top:-20px;
+        pointer-events:none;
+        z-index:9999;
+        animation: fall ${0.8+Math.random()*1.2}s ease-in forwards;
+        animation-delay: ${Math.random()*0.5}s;
+      `;
+      document.body.appendChild(dot);
+      setTimeout(() => dot.remove(), 2500);
+    }
+  }
+
+  // Add fall animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity:1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity:0; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Init math
+  newRound();
+</script>
+</body>
+</html>
